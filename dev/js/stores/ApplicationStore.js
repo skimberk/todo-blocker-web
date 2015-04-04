@@ -20,7 +20,8 @@ var ApplicationStore = Fluxxor.createStore({
     this.bindActions(
       actions.constants.CREATE_USER, this.createUser,
       actions.constants.LOGIN_USER, this.loginUser,
-      actions.constants.LOGOUT_USER, this.logoutUser
+      actions.constants.LOGOUT_USER, this.logoutUser,
+      actions.constants.CREATE_TODO, this.createTodo
     );
   },
 
@@ -83,6 +84,12 @@ var ApplicationStore = Fluxxor.createStore({
     this.emit('change');
   },
 
+  createTodo: function(options) {
+    todoUtils.createTodo(this.user.token, options).then(function() {
+      this.getTodos();
+    }.bind(this));
+  },
+
   getTodos: function() {
     todoUtils.getTodos(this.user.token).then(function(todos) {
       this.todos = todos.map(function(todo) {
@@ -93,11 +100,10 @@ var ApplicationStore = Fluxxor.createStore({
           endTime: new Date(todo.endTime),
           recurring: todo.recurring,
           whitelist: todo.whitelist,
-          urls: todo.urls
+          urls: todo.urls,
+          active: todo.active
         };
       });
-
-      console.log(this.todos);
 
       this.emit('change');
     }.bind(this)).catch(function(err) {

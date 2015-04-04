@@ -24,6 +24,16 @@ var todoScheme = mongoose.Schema({
   urls: [String]
 });
 
+todoScheme.methods.isActive = function() {
+  var now = new Date();
+
+  if(this.recurring) {
+    now = new Date(1970, 0, 1, now.getHours(), now.getMinutes(), now.getSeconds());
+  }
+
+  return now > this.startTime && now < this.endTime;
+};
+
 var userScheme = mongoose.Schema({
   username: {
     type: String,

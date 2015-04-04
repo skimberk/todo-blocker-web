@@ -140,11 +140,33 @@ app.get('/get-todos', authenticate, function(req, res) {
       endTime: todo.endTime,
       recurring: todo.recurring,
       whitelist: todo.whitelist,
-      urls: todo.urls
+      urls: todo.urls,
+      active: todo.isActive()
     });
   });
 
   res.json(todos);
+});
+
+app.get('/get-active-todos', authenticate, function(req, res) {
+  var todos = [];
+
+  req.user.todos.forEach(function(todo) {
+    if(todo.isActive()) {
+      todos.push({
+        reason: todo.reason,
+        startTime: todo.startTime,
+        endTime: todo.endTime,
+        recurring: todo.recurring,
+        whitelist: todo.whitelist,
+        urls: todo.urls
+      });
+    }
+  });
+
+  res.json({
+    todos: todos
+  });
 });
 
 var server = app.listen(process.env.NODE_ENV === 'production' ? 80 : 3000, function () {

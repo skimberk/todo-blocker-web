@@ -2,6 +2,8 @@ var React = require('react');
 var Fluxxor = require('fluxxor');
 var Modal = require('react-modal');
 
+var dateUtils = require('../utils/dateUtils');
+
 var Todo = require('./Todo');
 
 var Todos = React.createClass({
@@ -40,25 +42,23 @@ var Todos = React.createClass({
     var endTime;
 
     if(recurring) {
-      startTime = React.findDOMNode(this.refs['startTime-time']).valueAsDate;
-      endTime = React.findDOMNode(this.refs['endTime-time']).valueAsDate;
+      startTime = dateUtils.fixInput(React.findDOMNode(this.refs['startTime-time']).valueAsDate);
+      endTime = dateUtils.fixInput(React.findDOMNode(this.refs['endTime-time']).valueAsDate);
     }
     else {
-      var time = React.findDOMNode(this.refs['startTime-time']).valueAsDate;
-      var date = React.findDOMNode(this.refs['startTime-date']).valueAsDate;
-      startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-                            time.getHours(), time.getMinutes(), time.getSeconds());
+      var time = dateUtils.fixInput(React.findDOMNode(this.refs['startTime-time']).valueAsDate);
+      var date = dateUtils.fixInput(React.findDOMNode(this.refs['startTime-date']).valueAsDate);
+      startTime = dateUtils.mergeDateAndTime(date, time);
 
-      var time = React.findDOMNode(this.refs['endTime-time']).valueAsDate;
-      var date = React.findDOMNode(this.refs['endTime-date']).valueAsDate;
-      endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-                            time.getHours(), time.getMinutes(), time.getSeconds());
+      var time = dateUtils.fixInput(React.findDOMNode(this.refs['endTime-time']).valueAsDate);
+      var date = dateUtils.fixInput(React.findDOMNode(this.refs['endTime-date']).valueAsDate);
+      endTime = dateUtils.mergeDateAndTime(date, time);
     }
 
     var whitelist = React.findDOMNode(this.refs.whitelist).checked;
     var urls = React.findDOMNode(this.refs.urls).value.split("\n");
 
-    console.log({
+    this.getFlux().actions.createTodo({
       reason: reason,
       recurring: recurring,
       startTime: startTime,
@@ -66,6 +66,8 @@ var Todos = React.createClass({
       whitelist: whitelist,
       urls: urls
     });
+
+    this.creatorCloseHandler();
   },
 
   createHandler: function() {

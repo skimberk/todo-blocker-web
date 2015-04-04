@@ -141,6 +141,10 @@ input[type="submit"],
   margin: 24px 0;
 }
 
+.todo.active {
+  box-shadow: inset #e74c3c 0 0 0 5px;
+}
+
 .todo .reason {
   font-weight: 600;
 }

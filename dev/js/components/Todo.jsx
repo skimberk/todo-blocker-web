@@ -19,8 +19,8 @@ var Todos = React.createClass({
     var endTime;
 
     if(this.props.recurring) {
-      startTime = moment(this.props.startTime).format('h:m A');
-      endTime = moment(this.props.endTime).format('h:m A');
+      startTime = moment(this.props.startTime).format('h:mm A');
+      endTime = moment(this.props.endTime).format('h:mm A');
     }
     else {
       startTime = moment(this.props.startTime).calendar();
@@ -28,7 +28,7 @@ var Todos = React.createClass({
     }
 
     return (
-      <div className="todo">
+      <div className={'todo ' + (this.props.active ? 'active' : '')}>
         <div>
           <span className="reason">{this.props.reason}</span>
         </div>

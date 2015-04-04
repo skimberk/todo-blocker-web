@@ -1,7 +1,8 @@
 var constants = {
   CREATE_USER: 'CREATE_USER',
   LOGIN_USER: 'LOGIN_USER',
-  LOGOUT_USER: 'LOGOUT_USER'
+  LOGOUT_USER: 'LOGOUT_USER',
+  CREATE_TODO: 'CREATE_TODO'
 };
 
 var methods = {
@@ -13,6 +14,9 @@ var methods = {
   },
   logoutUser: function() {
     this.dispatch(constants.LOGOUT_USER);
+  },
+  createTodo: function(options) {
+    this.dispatch(constants.CREATE_TODO, options);
   }
 };
 
