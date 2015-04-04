@@ -62,7 +62,7 @@ var Application = React.createClass({displayName: "Application",
       content = (
         React.createElement("div", null, 
           React.createElement("div", {className: "info"}, 
-            React.createElement("h1", null, "Procastinate-Away"), 
+            React.createElement("h1", null, "Procastinate Away"), 
             React.createElement("p", null, "This is an application which you can use to block distracting website at predefined times. It functions with the assistance of a browser extension, which does the actual blocking.")
           ), 
           React.createElement("div", {className: "auth"}, 
