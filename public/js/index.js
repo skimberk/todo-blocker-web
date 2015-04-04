@@ -330,17 +330,17 @@ var Todos = React.createClass({displayName: "Todos",
             React.createElement("div", {className: "field"}, 
               React.createElement("label", null, 
                 React.createElement("input", {type: "radio", className: "partial", name: "whitelist", ref: "whitelist", value: "true", checked: this.state.creatorWhitelist, onChange: this.creatorWhitelistHandler}), 
-                "Whitelist"
+                "Block all except..."
               ), 
               React.createElement("label", null, 
                 React.createElement("input", {type: "radio", className: "partial", name: "whitelist", value: "false", checked: !this.state.creatorWhitelist, onChange: this.creatorWhitelistHandler}), 
-                "Blacklist"
+                "Allow all except..."
               )
             ), 
 
             React.createElement("div", {className: "field"}, 
               React.createElement("label", {htmlFor: "creator-urls"}, this.state.creatorWhitelist ? 'Allowed' : 'Blocked', " URLs (on separate lines)"), 
-              React.createElement("textarea", {id: "creator-urls", ref: "urls"})
+              React.createElement("textarea", {id: "creator-urls", ref: "urls", placeholder: "Ex: facebook.com"})
             ), 
 
             React.createElement("input", {type: "submit", value: "Create"})

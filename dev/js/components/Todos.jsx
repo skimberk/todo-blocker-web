@@ -129,17 +129,17 @@ var Todos = React.createClass({
             <div className="field">
               <label>
                 <input type="radio" className="partial" name="whitelist" ref="whitelist" value="true" checked={this.state.creatorWhitelist} onChange={this.creatorWhitelistHandler} />
-                Whitelist
+                Block all except...
               </label>
               <label>
                 <input type="radio" className="partial" name="whitelist" value="false" checked={!this.state.creatorWhitelist} onChange={this.creatorWhitelistHandler} />
-                Blacklist
+                Allow all except...
               </label>
             </div>
 
             <div className="field">
               <label htmlFor="creator-urls">{this.state.creatorWhitelist ? 'Allowed' : 'Blocked'} URLs (on separate lines)</label>
-              <textarea id="creator-urls" ref="urls" />
+              <textarea id="creator-urls" ref="urls" placeholder="Ex: facebook.com" />
             </div>
 
             <input type="submit" value="Create" />
