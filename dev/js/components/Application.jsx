@@ -34,6 +34,7 @@ var Application = React.createClass({
           <div className="info">
             <h1>Procastinate Away</h1>
             <p>This is an application which you can use to block distracting website at predefined times. It functions with the assistance of a browser extension, which does the actual blocking.</p>
+            <img src="/img/block-bad-websites.png" />
           </div>
           <div className="auth">
             <Login />

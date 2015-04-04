@@ -31,10 +31,6 @@ todoScheme.methods.isActive = function() {
     now = new Date(1970, 0, 1, now.getHours(), now.getMinutes(), now.getSeconds());
   }
 
-  console.log('Start', this.startTime);
-  console.log('Now', new Date());
-  console.log('End', this.endTime);
-
   return now > this.startTime && now < this.endTime;
 };
 

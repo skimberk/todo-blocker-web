@@ -70,6 +70,9 @@ input[type="submit"], .button {
     background: #999 url('/img/spinner.gif') 50% 50% no-repeat !important;
     background-size: 22px 22px !important; }
 
+img {
+  max-width: 100%; }
+
 .info {
   width: 60%;
   float: left; }
