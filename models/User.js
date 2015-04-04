@@ -7,7 +7,8 @@ var todoScheme = mongoose.Schema({
   },
   startTime: Date,
   endTime: Date,
-  activated: Boolean
+  whitelist: Boolean,
+  urls: [String]
 });
 
 var userScheme = mongoose.Schema({
