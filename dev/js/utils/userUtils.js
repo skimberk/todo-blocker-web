@@ -39,5 +39,25 @@ module.exports = {
         return resolve(JSON.parse(res.text));
       });
     });
+  },
+
+  getUserWithToken: function(token) {
+    return new Promise(function(resolve, reject) {
+      request
+      .post('/get-user-with-token')
+      .send({token: token})
+      .end(function(err, res) {
+        if(err) {
+          if(res.status === 400) {
+            var json = JSON.parse(res.text);
+            return reject(json.error);
+          }
+
+          return reject(err.toString())
+        }
+
+        return resolve(JSON.parse(res.text));
+      });
+    });
   }
 };

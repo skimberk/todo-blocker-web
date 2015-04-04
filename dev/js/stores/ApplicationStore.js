@@ -1,4 +1,5 @@
 var Fluxxor = require('fluxxor');
+var cookie = require('cookie');
 
 var actions = require('../actions');
 
@@ -9,6 +10,12 @@ var ApplicationStore = Fluxxor.createStore({
   initialize: function() {
     this.user;
     this.todos = [];
+
+    var cookies = cookie.parse(document.cookie);
+
+    if(cookies.token) {
+      this.loginUserFromToken(cookies.token);
+    }
 
     this.bindActions(
       actions.constants.CREATE_USER, this.createUser,
@@ -27,11 +34,7 @@ var ApplicationStore = Fluxxor.createStore({
 
   createUser: function(options) {
     userUtils.createUser(options.username, options.password).then(function(user) {
-      this.user = user;
-
-      this.getTodos();
-
-      this.emit('change');
+      this.setUser(user);
     }.bind(this)).catch(function(err) {
       alert(err.toString());
     });
@@ -39,19 +42,43 @@ var ApplicationStore = Fluxxor.createStore({
 
   loginUser: function(options) {
     userUtils.getUser(options.username, options.password).then(function(user) {
-      this.user = user;
-
-      this.getTodos();
-
-      this.emit('change');
+      this.setUser(user);
     }.bind(this)).catch(function(err) {
       alert(err.toString());
     });
   },
 
+  loginUserFromToken: function(token) {
+    userUtils.getUserWithToken(token).then(function(user) {
+      this.setUser(user);
+    }.bind(this)).catch(function(err) {
+      alert(err.toString());
+    });
+  },
+
+  setUser: function(user) {
+    this.user = user;
+
+    var expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    document.cookie = cookie.serialize('token', user.token, {
+      expires: expires
+    });
+
+    this.getTodos();
+
+    this.emit('change');
+  },
+
   logoutUser: function() {
     this.user = null;
     this.todos = [];
+
+    var expires = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+    document.cookie = cookie.serialize('token', '', {
+      expires: expires
+    });
 
     this.emit('change');
   },

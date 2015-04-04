@@ -12,7 +12,9 @@ var Todos = React.createClass({
 
   getInitialState: function() {
     return {
-      creatorOpen: false
+      creatorOpen: false,
+      creatorRecurring: true,
+      creatorWhitelist: true
     };
   },
 
@@ -24,13 +26,63 @@ var Todos = React.createClass({
 
   creatorCloseHandler: function() {
     this.setState({
-      creatorOpen: false
+      creatorOpen: false,
+      creatorRecurring: true,
+      creatorWhitelist: true
+    });
+  },
+
+  creatorSubmitHandler: function() {
+    var reason = React.findDOMNode(this.refs.reason).value;
+    var recurring = React.findDOMNode(this.refs.recurring).checked;
+
+    var startTime;
+    var endTime;
+
+    if(recurring) {
+      startTime = React.findDOMNode(this.refs['startTime-time']).valueAsDate;
+      endTime = React.findDOMNode(this.refs['endTime-time']).valueAsDate;
+    }
+    else {
+      var time = React.findDOMNode(this.refs['startTime-time']).valueAsDate;
+      var date = React.findDOMNode(this.refs['startTime-date']).valueAsDate;
+      startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                            time.getHours(), time.getMinutes(), time.getSeconds());
+
+      var time = React.findDOMNode(this.refs['endTime-time']).valueAsDate;
+      var date = React.findDOMNode(this.refs['endTime-date']).valueAsDate;
+      endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                            time.getHours(), time.getMinutes(), time.getSeconds());
+    }
+
+    var whitelist = React.findDOMNode(this.refs.whitelist).checked;
+    var urls = React.findDOMNode(this.refs.urls).value.split("\n");
+
+    console.log({
+      reason: reason,
+      recurring: recurring,
+      startTime: startTime,
+      endTime: endTime,
+      whitelist: whitelist,
+      urls: urls
     });
   },
 
   createHandler: function() {
     this.setState({
       creatorOpen: true
+    });
+  },
+
+  creatorRecurringHandler: function(e) {
+    this.setState({
+      creatorRecurring: e.target.checked
+    });
+  },
+
+  creatorWhitelistHandler: function(e) {
+    this.setState({
+      creatorWhitelist: e.target.value === 'true'
     });
   },
 
@@ -41,7 +93,56 @@ var Todos = React.createClass({
 
     return (
       <div className="todos">
-        <Modal isOpen={this.state.creatorOpen} onRequestClose={this.creatorCloseHandler}></Modal>
+        <Modal isOpen={this.state.creatorOpen} onRequestClose={this.creatorCloseHandler}>
+          <form action="javascript:void(0)" onSubmit={this.creatorSubmitHandler}>
+            <h2>Create reminder</h2>
+            <div className="field">
+              <label htmlFor="creator-reason">Reason</label>
+              <textarea id="creator-reason" ref="reason" required />
+            </div>
+
+            <div className="field">
+              <label>
+                <input type="checkbox" ref="recurring" className="partial" checked={this.state.creatorRecurring} onChange={this.creatorRecurringHandler} />
+                Recurring reminder
+              </label>
+            </div>
+
+            <div className="field">
+              <label htmlFor="creator-startTime">Start time</label>
+              <div>
+                <input type="time" id="creator-startTime" ref="startTime-time" className="partial" required />
+                {(this.state.creatorRecurring ? '' : <input type="date" ref="startTime-date" className="partial" required />)}
+              </div>
+            </div>
+
+            <div className="field">
+              <label htmlFor="creator-endTime">End time</label>
+              <div>
+                <input type="time" id="creator-endTime" ref="endTime-time" className="partial" required />
+                {(this.state.creatorRecurring ? '' : <input type="date" ref="endTime-date" className="partial" required />)}
+              </div>
+            </div>
+
+            <div className="field">
+              <label>
+                <input type="radio" className="partial" name="whitelist" ref="whitelist" value="true" checked={this.state.creatorWhitelist} onChange={this.creatorWhitelistHandler} />
+                Whitelist
+              </label>
+              <label>
+                <input type="radio" className="partial" name="whitelist" value="false" checked={!this.state.creatorWhitelist} onChange={this.creatorWhitelistHandler} />
+                Blacklist
+              </label>
+            </div>
+
+            <div className="field">
+              <label htmlFor="creator-urls">{this.state.creatorWhitelist ? 'Allowed' : 'Blocked'} URLs (on separate lines)</label>
+              <textarea id="creator-urls" ref="urls" />
+            </div>
+
+            <input type="submit" value="Create" />
+          </form>
+        </Modal>
 
         <a href="javascript:void(0)" className="button" onClick={this.createHandler}>Create a reminder!</a>
         {todos}

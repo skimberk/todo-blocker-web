@@ -82,6 +82,28 @@ app.post('/get-user', function(req, res) {
   });
 });
 
+app.post('/get-user-with-token', function(req, res) {
+  var token = req.body.token;
+
+  User.findOne({token: token}, function(err, user) {
+    if(err) {
+      return res.status(400).json({
+        error: err.toString()
+      });
+    }
+    if(!user) {
+      return res.status(400).json({
+        error: 'No user exists with specified token.'
+      });
+    }
+
+    return res.json({
+      username: user.username,
+      token: user.token
+    });
+  });
+});
+
 app.post('/create-todo', authenticate, function(req, res) {
   var user = req.user;
 
