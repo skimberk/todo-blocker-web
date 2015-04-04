@@ -106,3 +106,20 @@ input[type="submit"],
 .todo .reason {
   font-weight: 600;
 }
+
+.ReactModal__Content {
+  position: relative;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 400px;
+  margin: 200px auto 0;
+  border-radius: $border-radius;
+  outline: none;
+  border: 1px solid #333;
+}
+
+.ReactModal__Overlay {
+  background: rgba(#333, 0.5);
+}

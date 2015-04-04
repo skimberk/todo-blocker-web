@@ -15,17 +15,17 @@ var Todos = React.createClass({
   },
 
   render: function() {
-    var dateFormat;
+    var startTime;
+    var endTime;
 
     if(this.props.recurring) {
-      dateFormat = 'h:m A';
+      startTime = moment(this.props.startTime).format('h:m A');
+      endTime = moment(this.props.endTime).format('h:m A');
     }
     else {
-      dateFormat = 'h:m A MMMM Do, YYYY';
+      startTime = moment(this.props.startTime).calendar();
+      endTime = moment(this.props.endTime).calendar();
     }
-
-    var startTime = moment(this.props.startTime).format(dateFormat);
-    var endTime = moment(this.props.endTime).format(dateFormat);
 
     return (
       <div className="todo">

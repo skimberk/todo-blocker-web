@@ -2,6 +2,7 @@ require('es6-promise').polyfill();
 
 var React = require('react');
 var Fluxxor = require('fluxxor');
+var Modal = require('react-modal');
 
 var Application = require('./components/Application');
 
@@ -17,7 +18,12 @@ flux.on('dispatch', function(type, payload) {
   console.log('Dispatch:', type, payload);
 });
 
+var applicationElement = document.getElementById('application');
+
 React.render(
   <Application flux={flux} />,
-  document.getElementById('application')
+  applicationElement
 );
+
+Modal.setAppElement(applicationElement);
+Modal.injectCSS();
