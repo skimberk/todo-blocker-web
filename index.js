@@ -52,8 +52,9 @@ app.post('/create-user', function(req, res) {
       });
     }
 
-    res.json({
-      success: true
+    return res.json({
+      username: user.username,
+      token: user.token
     });
   });
 });
@@ -65,24 +66,62 @@ app.post('/get-user', function(req, res) {
   User.findOne({username: username}, function(err, user) {
     if(err) {
       return res.status(400).json({
-        'error': err.toString()
+        error: err.toString()
       });
     }
     if(!user || !bcrypt.compareSync(password, user.password)) {
       return res.status(400).json({
-        'error': 'Either username or password is incorrect.'
+        error: 'Either username or password is incorrect.'
       });
     }
 
     return res.json({
-      'username': user.username,
-      'token': user.token
+      username: user.username,
+      token: user.token
     });
   });
 });
 
-app.get('/get-user-test', authenticate, function(req, res) {
-  res.send(req.user);
+app.post('/create-todo', authenticate, function(req, res) {
+  var user = req.user;
+
+  user.todos.push({
+    reason: req.body.reason,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    recurring: req.body.recurring,
+    whitelist: req.body.whitelist,
+    urls: req.body.urls
+  });
+
+  user.save(function(err) {
+    if(err) {
+      return res.status(400).json({
+        error: err.toString()
+      });
+    }
+
+    res.json({
+      success: true
+    });
+  });
+});
+
+app.get('/get-todos', authenticate, function(req, res) {
+  var todos = [];
+
+  req.user.todos.forEach(function(todo) {
+    todos.push({
+      reason: todo.reason,
+      startTime: todo.startTime,
+      endTime: todo.endTime,
+      recurring: todo.recurring,
+      whitelist: todo.whitelist,
+      urls: todo.urls
+    });
+  });
+
+  res.json(todos);
 });
 
 var server = app.listen(3000, function () {

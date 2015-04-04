@@ -8,6 +8,7 @@
       reason: String,
       startTime: Date,
       endTime: Date,
+      recurring: Boolean,
       whitelist: Boolean,
       urls: [
         String,

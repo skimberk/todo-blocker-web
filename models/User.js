@@ -5,9 +5,22 @@ var todoScheme = mongoose.Schema({
     type: String,
     required: true
   },
-  startTime: Date,
-  endTime: Date,
-  whitelist: Boolean,
+  startTime: {
+    type: Date,
+    required: true
+  },
+  endTime: {
+    type: Date,
+    required: true
+  },
+  recurring: {
+    type: Boolean,
+    required: true
+  },
+  whitelist: {
+    type: Boolean,
+    required: true
+  },
   urls: [String]
 });
 

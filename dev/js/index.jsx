@@ -1,43 +1,23 @@
-var request = require('superagent');
+require('es6-promise').polyfill();
 
-window.createUser = function(username, password) {
-  request
-  .post('/create-user')
-  .send({username: username, password: password})
-  .end(function(err, res) {
-    if(err) {
-      console.log(res.text);
-      throw new Error(err);
-    }
+var React = require('react');
+var Fluxxor = require('fluxxor');
 
-    console.log('User created!');
-  });
+var Application = require('./components/Application');
+
+var actions = require('./actions');
+var ApplicationStore = require('./stores/ApplicationStore');
+
+var stores = {
+  ApplicationStore: new ApplicationStore()
 };
 
-window.getUser = function(username, password) {
-  request
-  .post('/get-user')
-  .send({username: username, password: password})
-  .end(function(err, res) {
-    if(err) {
-      console.log(res.text);
-      throw new Error(err);
-    }
+var flux = new Fluxxor.Flux(stores, actions.methods);
+flux.on('dispatch', function(type, payload) {
+  console.log('Dispatch:', type, payload);
+});
 
-    var json = JSON.parse(res.text);
-    console.log(json);
-  });
-};
-
-window.getUserTest = function(token) {
-  request
-  .get('/get-user-test')
-  .set('Authorization', 'Bearer ' + token)
-  .end(function(err, res) {
-    if(err) {
-      throw new Error(err);
-    }
-
-    console.log(res.text);
-  });
-};
+React.render(
+  <Application flux={flux} />,
+  document.getElementById('application')
+);
