@@ -1,0 +1,20 @@
+{
+  "name": "todo-blocker-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sebastian Kimberk <skimberk1@gmail.com> (http://sebastian.io/)",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^0.8.2",
+    "body-parser": "^1.12.2",
+    "express": "^4.12.3",
+    "mongoose": "^4.0.1",
+    "node-uuid": "^1.4.3",
+    "passport": "^0.2.1",
+    "passport-http-bearer": "^1.0.1"
+  }
+}
