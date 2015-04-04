@@ -112,6 +112,7 @@ app.get('/get-todos', authenticate, function(req, res) {
 
   req.user.todos.forEach(function(todo) {
     todos.push({
+      id: todo.id,
       reason: todo.reason,
       startTime: todo.startTime,
       endTime: todo.endTime,

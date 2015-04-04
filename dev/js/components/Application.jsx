@@ -3,6 +3,7 @@ var Fluxxor = require('fluxxor');
 
 var Login = require('./Login');
 var Register = require('./Register');
+var Todos = require('./Todos');
 
 var Application = React.createClass({
   mixins: [
@@ -20,13 +21,24 @@ var Application = React.createClass({
     var content;
 
     if(this.state.loggedIn) {
-      content = 'Logged in as: ' + this.state.user.username + '.';
+      content = (
+        <div>
+          <p>Hello {this.state.user.username}! <a href="javascript:void(0)" onClick={this.getFlux().actions.logoutUser}>Logout</a></p>
+          <Todos />
+        </div>
+      );
     }
     else {
       content = (
         <div>
-          <Login />
-          <Register />
+          <div className="info">
+            <h1>Procastinate-Away</h1>
+            <p>This is an application which you can use to block distracting website at predefined times. It functions with the assistance of a browser extension, which does the actual blocking.</p>
+          </div>
+          <div className="auth">
+            <Login />
+            <Register />
+          </div>
         </div>
       );
     }
