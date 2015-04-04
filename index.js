@@ -47,7 +47,7 @@ app.post('/create-user', function(req, res) {
 
   user.save(function(err) {
     if(err) {
-      return res.json(400, {
+      return res.status(400).json({
         error: err.toString()
       });
     }
@@ -56,6 +56,33 @@ app.post('/create-user', function(req, res) {
       success: true
     });
   });
+});
+
+app.post('/get-user', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) {
+      return res.status(400).json({
+        'error': err.toString()
+      });
+    }
+    if(!user || !bcrypt.compareSync(password, user.password)) {
+      return res.status(400).json({
+        'error': 'Either username or password is incorrect.'
+      });
+    }
+
+    return res.json({
+      'username': user.username,
+      'token': user.token
+    });
+  });
+});
+
+app.get('/get-user-test', authenticate, function(req, res) {
+  res.send(req.user);
 });
 
 var server = app.listen(3000, function () {
