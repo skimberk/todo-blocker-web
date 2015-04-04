@@ -129,11 +129,14 @@ var Todos = React.createClass({
             <div className="field">
               <label>
                 <input type="radio" className="partial" name="whitelist" ref="whitelist" value="true" checked={this.state.creatorWhitelist} onChange={this.creatorWhitelistHandler} />
-                Block all except...
+                Block all websites, except the ones that follow...
               </label>
+            </div>
+
+            <div className="field">
               <label>
                 <input type="radio" className="partial" name="whitelist" value="false" checked={!this.state.creatorWhitelist} onChange={this.creatorWhitelistHandler} />
-                Allow all except...
+                Allow all websites, except the ones that follow...
               </label>
             </div>
 
